@@ -3,6 +3,7 @@ import logging
 import time
 from zipfile import ZipFile
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -63,6 +64,7 @@ logger.debug('our data is %d x %d' % X.shape)
 test_size = 0.99
 n_jobs = 10
 random_state = 1
+visualize_linear_model = True
 
 for target_column in target_columns:
     y = data[target_column]
@@ -75,6 +77,14 @@ for target_column in target_columns:
     linear_model.fit(X=X_train, y=y_train)
     linear_model_score = linear_model.score(X=X_test, y=y_test)
     logger.debug('linear model: for test size %.3f we have accuracy %.3f' % (test_size, linear_model_score))
+    if visualize_linear_model:
+        y_predicted = linear_model.predict(X=X_test)
+        plt.scatter(y_test, y_predicted)
+        linear_scatter_filename = '../output/' + target_column + '_linear_scatter.png'
+        plt.savefig(linear_scatter_filename)
+        plt.close()
+
+
 
     decision_tree_model = DecisionTreeRegressor(random_state=random_state)
     decision_tree_model.fit(X=X_train, y=y_train)
