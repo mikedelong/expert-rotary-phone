@@ -43,7 +43,6 @@ if 'visualize_decision_tree' in settings.keys():
 zip_file = ZipFile(full_input_file)
 logger.debug(zip_file.filelist)
 columns = settings['named_columns']
-columns.extend(['s' + str(i) for i in range(16)])
 logger.debug(columns)
 logger.debug([text_file.filename for text_file in zip_file.infolist()])
 dfs = {
