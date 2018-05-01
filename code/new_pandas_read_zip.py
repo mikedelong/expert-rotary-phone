@@ -41,6 +41,10 @@ visualize_decision_tree = False
 if 'visualize_decision_tree' in settings.keys():
     visualize_decision_tree = settings['visualize_decision_tree']
 
+test_size = 0.7
+if 'test_size' in settings.keys():
+    test_size = settings['test_size']
+
 zip_file = ZipFile(full_input_file)
 logger.debug(zip_file.filelist)
 columns = settings['named_columns']
@@ -61,7 +65,6 @@ X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
 # todo make these settings
-test_size = 0.99
 n_jobs = 10
 random_state = 1
 visualize_linear_model = True
