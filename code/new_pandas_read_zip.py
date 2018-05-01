@@ -27,16 +27,17 @@ with open('./new_read_zip_settings.json', 'rb') as settings_fp:
     settings = json.loads(t.decode('utf-8'))
 
 logger.debug(settings)
+input_folder = settings['input_folder']
+input_file = settings['input_file']
+full_input_file = input_folder + input_file
+logger.debug('we are reading our data from %s' % full_input_file)
 if 'nrows' in settings.keys():
     nrows = settings['nrows']
     if nrows < 1:
         nrows = None
 else:
     nrows = None
-input_folder = settings['input_folder']
-input_file = settings['input_file']
-full_input_file = input_folder + input_file
-logger.debug('we are reading our data from %s' % full_input_file)
+visualize_decision_tree = settings['visualize_decision_tree']
 
 zip_file = ZipFile(full_input_file)
 logger.debug(zip_file.filelist)
@@ -79,8 +80,10 @@ for target_column in target_columns:
     decision_tree_model.fit(X=X_train, y=y_train)
     decision_tree_score = decision_tree_model.score(X=X_test, y=y_test)
     logger.debug('decision tree: for test size %.3f we have accuracy %.3f' % (test_size, decision_tree_score))
-    out_file = target_column + '_decision_tree.dot'
-    export_graphviz(decision_tree_model, feature_names=X_train.columns, filled=True, rounded=True, out_file=out_file)
+    if visualize_decision_tree:
+        out_file = target_column + '_decision_tree.dot'
+        export_graphviz(decision_tree_model, feature_names=X_train.columns, filled=True, rounded=True,
+                        out_file=out_file)
 
     random_forest_model = RandomForestRegressor(n_jobs=n_jobs, n_estimators=n_estimators)
     random_forest_model.fit(X=X_train, y=y_train)
