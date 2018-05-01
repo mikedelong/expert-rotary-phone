@@ -27,6 +27,12 @@ with open('./new_read_zip_settings.json', 'rb') as settings_fp:
     settings = json.loads(t.decode('utf-8'))
 
 logger.debug(settings)
+if 'nrows' in settings.keys():
+    nrows = settings['nrows']
+    if nrows < 1:
+        nrows = None
+else:
+    nrows = None
 input_folder = settings['input_folder']
 input_file = settings['input_file']
 full_input_file = input_folder + input_file
@@ -40,7 +46,7 @@ logger.debug(columns)
 logger.debug([text_file.filename for text_file in zip_file.infolist()])
 dfs = {
     text_file.filename: pd.read_csv(zip_file.open(text_file.filename), names=columns,
-                                    nrows=100000,
+                                    nrows=nrows,
                                     delim_whitespace=True,
                                     skiprows=1) for text_file in zip_file.infolist() if
     text_file.filename.endswith('.txt')}
