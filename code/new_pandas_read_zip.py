@@ -68,6 +68,7 @@ logger.debug('our data is %d x %d' % X.shape)
 n_jobs = 10
 random_state = 1
 visualize_linear_model = True
+output_folder = './output/'
 
 for target_column in target_columns:
     y = data[target_column]
@@ -83,18 +84,16 @@ for target_column in target_columns:
     if visualize_linear_model:
         y_predicted = linear_model.predict(X=X_test)
         plt.scatter(y_test, y_predicted)
-        linear_scatter_filename = '../output/' + target_column + '_linear_scatter.png'
+        linear_scatter_filename = output_folder + target_column + '_linear_scatter.png'
         plt.savefig(linear_scatter_filename)
         plt.close()
-
-
 
     decision_tree_model = DecisionTreeRegressor(random_state=random_state)
     decision_tree_model.fit(X=X_train, y=y_train)
     decision_tree_score = decision_tree_model.score(X=X_test, y=y_test)
     logger.debug('decision tree: for test size %.3f we have accuracy %.3f' % (test_size, decision_tree_score))
     if visualize_decision_tree:
-        out_file = target_column + '_decision_tree.dot'
+        out_file = output_folder + target_column + '_decision_tree.dot'
         export_graphviz(decision_tree_model, feature_names=X_train.columns, filled=True, rounded=True,
                         out_file=out_file)
 
