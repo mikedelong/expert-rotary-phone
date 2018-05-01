@@ -31,13 +31,14 @@ input_folder = settings['input_folder']
 input_file = settings['input_file']
 full_input_file = input_folder + input_file
 logger.debug('we are reading our data from %s' % full_input_file)
+nrows = None
 if 'nrows' in settings.keys():
     nrows = settings['nrows']
     if nrows < 1:
         nrows = None
-else:
-    nrows = None
-visualize_decision_tree = settings['visualize_decision_tree']
+visualize_decision_tree = False
+if 'visualize_decision_tree' in settings.keys():
+    visualize_decision_tree = settings['visualize_decision_tree']
 
 zip_file = ZipFile(full_input_file)
 logger.debug(zip_file.filelist)
