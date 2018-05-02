@@ -32,11 +32,21 @@ input_folder = settings['input_folder']
 input_file = settings['input_file']
 full_input_file = input_folder + input_file
 logger.debug('we are reading our data from %s' % full_input_file)
+
+n_jobs = 1
+if 'n_jobs' in settings.keys():
+    n_jobs = settings['n_jobs']
+if n_jobs == 1:
+    logger.debug('our model will run serial')
+else:
+    logger.debug('our model will run using %d jobs' % n_jobs)
+
 nrows = None
 if 'nrows' in settings.keys():
     nrows = settings['nrows']
     if nrows < 1:
         nrows = None
+
 visualize_decision_tree = False
 if 'visualize_decision_tree' in settings.keys():
     visualize_decision_tree = settings['visualize_decision_tree']
@@ -65,15 +75,14 @@ X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
 # todo make these settings
-n_jobs = 10
 random_state = 1
 visualize_linear_model = True
-output_folder = './output/'
+output_folder = '../output/'
+n_estimators = n_jobs  # note that we are pegging these
 
 for target_column in target_columns:
     y = data[target_column]
 
-    n_estimators = n_jobs  # note that we are pegging these
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
     logger.debug('our training features are %s' % X_train.columns)
 
