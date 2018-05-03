@@ -47,6 +47,10 @@ if 'nrows' in settings.keys():
     if nrows < 1:
         nrows = None
 
+random_state = 1
+if 'random_state' in settings.keys():
+    random_state = settings['random_state']
+
 visualize_decision_tree = False
 if 'visualize_decision_tree' in settings.keys():
     visualize_decision_tree = settings['visualize_decision_tree']
@@ -75,7 +79,6 @@ X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
 # todo make these settings
-random_state = 1
 visualize_linear_model = True
 output_folder = '../output/'
 n_estimators = n_jobs  # note that we are pegging these
