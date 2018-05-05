@@ -52,9 +52,9 @@ if 'output_folder' in settings.keys():
     if not output_folder.endswith('/'):
         output_folder += '/'
 else:
+    output_folder = None
     logger.warning('necessary parameter output_folder not defined. Quitting.')
     quit()
-
 
 random_state = 1
 if 'random_state' in settings.keys():
