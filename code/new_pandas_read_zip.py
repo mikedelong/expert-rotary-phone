@@ -55,6 +55,10 @@ visualize_decision_tree = False
 if 'visualize_decision_tree' in settings.keys():
     visualize_decision_tree = settings['visualize_decision_tree']
 
+visualize_linear_model = False
+if 'visualize_linear_model' in settings.keys():
+    visualize_linear_model = settings['visualize_linear_model']
+
 test_size = 0.7
 if 'test_size' in settings.keys():
     test_size = settings['test_size']
@@ -79,7 +83,6 @@ X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
 # todo make these settings
-visualize_linear_model = True
 output_folder = '../output/'
 n_estimators = n_jobs  # note that we are pegging these
 
