@@ -47,6 +47,15 @@ if 'nrows' in settings.keys():
     if nrows < 1:
         nrows = None
 
+if 'output_folder' in settings.keys():
+    output_folder = settings['output_folder']
+    if not output_folder.endswith('/'):
+        output_folder += '/'
+else:
+    logger.warning('necessary parameter output_folder not defined. Quitting.')
+    quit()
+
+
 random_state = 1
 if 'random_state' in settings.keys():
     random_state = settings['random_state']
@@ -83,7 +92,6 @@ X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
 # todo make these settings
-output_folder = '../output/'
 n_estimators = n_jobs  # note that we are pegging these
 
 for target_column in target_columns:
