@@ -41,6 +41,12 @@ if n_jobs == 1:
 else:
     logger.debug('our model will run using %d jobs' % n_jobs)
 
+n_estimators = 10
+if 'n_estimators' in settings.keys():
+    n_estimators = settings['n_estimators']
+    if n_estimators == -1:
+        n_estimators = n_jobs
+
 nrows = None
 if 'nrows' in settings.keys():
     nrows = settings['nrows']
@@ -91,8 +97,6 @@ target_columns = settings['target_columns']
 X = data[training_columns]
 logger.debug('our data is %d x %d' % X.shape)
 
-# todo make these settings
-n_estimators = n_jobs  # note that we are pegging these
 
 for target_column in target_columns:
     y = data[target_column]
