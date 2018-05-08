@@ -57,10 +57,11 @@ dfs = {
                                     skiprows=1) for text_file in zip_file.infolist() if
     text_file.filename.endswith('.txt')}
 
-key = list(dfs.keys())[1]
-data = dfs[key]
-data['seconds'] = pd.TimedeltaIndex(data=data['seconds'], unit='s')
-logger.debug('\n%s' % data.head(10))
+for key in dfs.keys():
+    data = dfs[key]
+    data['seconds'] = pd.TimedeltaIndex(data=data['seconds'], unit='s')
+    dfs[key] = data
+    logger.debug('key: %s \n%s' % (key, data.head(10)))
 
 logger.debug('done')
 finish_time = time.time()
