@@ -59,10 +59,6 @@ dfs = {
 
 key = list(dfs.keys())[1]
 data = dfs[key]
-seconds = data['seconds']
-logger.debug(seconds.shape)
-t0 = pd.TimedeltaIndex(data=seconds, unit='s')
-logger.debug(t0)
 data['seconds'] = pd.TimedeltaIndex(data=data['seconds'], unit='s')
 logger.debug('\n%s' % data.head(10))
 
