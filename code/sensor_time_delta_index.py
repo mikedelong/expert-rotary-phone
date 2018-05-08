@@ -16,10 +16,8 @@ logger.addHandler(console_handler)
 console_handler.setLevel(logging.DEBUG)
 logger.debug('started')
 
-# todo fix this
-with open('./new_read_zip_settings.json', 'rb') as settings_fp:
-    t = settings_fp.read()
-    settings = json.loads(t.decode('utf-8'))
+with open('./sensor_time_delta_index.json', 'r', encoding='utf-8') as settings_fp:
+    settings = json.load(settings_fp)
 
 logger.debug(settings)
 input_folder = settings['input_folder']
