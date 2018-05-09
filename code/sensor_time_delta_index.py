@@ -55,11 +55,25 @@ dfs = {
                                     skiprows=1) for text_file in zip_file.infolist() if
     text_file.filename.endswith('.txt')}
 
+output_compression = None
+if 'output_compression' in settings.keys():
+    output_compression = settings['output_compression']
+output_folder = settings['output_folder']
 for key in dfs.keys():
     data = dfs[key]
     data['seconds'] = pd.TimedeltaIndex(data=data['seconds'], unit='s')
     dfs[key] = data
     logger.debug('key: %s \n%s' % (key, data.head(10)))
+    # save the result as CSV
+    output_filename = key.replace('.txt', '.csv')
+    full_output_file = output_folder + output_filename
+    if output_compression is not None:
+        if output_compression == 'gzip':
+            full_output_file += '.gz'
+        logger.debug('writing resulting CSV to %s using %s compression' % (full_output_file, output_compression))
+    else:
+        logger.debug('writing resulting CSV to %s' % full_output_file)
+    data.to_csv(full_output_file, compression=output_compression)
 
 logger.debug('done')
 finish_time = time.time()
