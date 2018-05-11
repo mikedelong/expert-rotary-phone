@@ -36,14 +36,12 @@ if input_file.endswith('.gz'):
 
 data = pd.read_csv(full_input_file, compression=compression, nrows=nrows)
 logger.debug('our data frame is %d x %d' % data.shape)
-logger.debug(data.columns)
+logger.debug('before dropping unnamed columns we have %s' % data.columns.values)
 
-for column in data.columns:
-    if column.startswith('Unnamed'):
-        logger.debug('dropping column %s from data' % column)
-        data.drop([column], axis=1, inplace=True)
+data.drop([column for column in data.columns if column.startswith('Unnamed')], axis=1, inplace=True)
+logger.debug('after dropping unnamed columns we have these remaining columns: %s' % data.columns.values)
 
-# we know we have 18 columns to visualize
+# we know we have 18 columns to visualize so we can divide them into 6 x 3
 nrows = 6
 ncols = 3
 figure, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(16, 8))
