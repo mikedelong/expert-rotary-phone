@@ -25,23 +25,11 @@ input_file = settings['input_file']
 full_input_file = input_folder + input_file
 logger.debug('we are reading our data from %s' % full_input_file)
 
-n_jobs = 1
-if 'n_jobs' in settings.keys():
-    n_jobs = settings['n_jobs']
-if n_jobs == 1:
-    logger.debug('our model will run serial')
-else:
-    logger.debug('our model will run using %d jobs' % n_jobs)
-
 nrows = None
 if 'nrows' in settings.keys():
     nrows = settings['nrows']
     if nrows < 1:
         nrows = None
-
-random_state = 1
-if 'random_state' in settings.keys():
-    random_state = settings['random_state']
 
 zip_file = ZipFile(full_input_file)
 logger.debug(zip_file.filelist)
