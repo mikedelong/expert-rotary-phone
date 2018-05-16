@@ -16,7 +16,7 @@ This example uses APIs in Tensorflow 1.4 or above.
 """
 
 from __future__ import absolute_import
-from __future__ import division
+# from __future__ import division
 from __future__ import print_function
 
 import os
@@ -61,8 +61,7 @@ def input_fn(file_name, num_data, batch_size, is_training):
         # Last dim is the label.
         num_features = len(FEATURE_KEYS)
         num_columns = num_features + 1
-        columns = tf.decode_csv(rows_string_tensor,
-                                record_defaults=[[]] * num_columns)
+        columns = tf.decode_csv(rows_string_tensor, record_defaults=[[]] * num_columns)
         features = dict(zip(FEATURE_KEYS, columns[:num_features]))
         labels = tf.cast(columns[num_features], tf.int32)
         return features, labels
@@ -92,24 +91,19 @@ def input_fn(file_name, num_data, batch_size, is_training):
 def main(unused_argv):
     tf.logging.set_verbosity(tf.logging.INFO)
 
-    num_training_data = maybe_download_iris_data(
-        IRIS_TRAINING, IRIS_TRAINING_URL)
+    num_training_data = maybe_download_iris_data(IRIS_TRAINING, IRIS_TRAINING_URL)
     num_test_data = maybe_download_iris_data(IRIS_TEST, IRIS_TEST_URL)
 
     # Build 3 layer DNN with 10, 20, 10 units respectively.
-    feature_columns = [
-        tf.feature_column.numeric_column(key, shape=1) for key in FEATURE_KEYS]
-    classifier = tf.estimator.DNNClassifier(
-        feature_columns=feature_columns, hidden_units=[10, 20, 10], n_classes=3)
+    feature_columns = [tf.feature_column.numeric_column(key, shape=1) for key in FEATURE_KEYS]
+    classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns, hidden_units=[10, 20, 10], n_classes=3)
 
     # Train.
-    train_input_fn = input_fn(IRIS_TRAINING, num_training_data, batch_size=32,
-                              is_training=True)
+    train_input_fn = input_fn(IRIS_TRAINING, num_training_data, batch_size=32, is_training=True)
     classifier.train(input_fn=train_input_fn, steps=400)
 
     # Eval.
-    test_input_fn = input_fn(IRIS_TEST, num_test_data, batch_size=32,
-                             is_training=False)
+    test_input_fn = input_fn(IRIS_TEST, num_test_data, batch_size=32, is_training=False)
     scores = classifier.evaluate(input_fn=test_input_fn)
     print('Accuracy (tensorflow): {0:f}'.format(scores['accuracy']))
 
