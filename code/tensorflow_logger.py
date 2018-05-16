@@ -18,16 +18,12 @@ tf.logging.set_verbosity(tf.logging.DEBUG)
 
 a = tf.constant(5, name="a")
 b = tf.constant(15, name="b")
-
 c = tf.add(a, b, name="c")
 
 logger.debug("Value of c before running tensor: %s" % c)
-
 session = tf.Session()
-
 output = session.run(c)
 logger.debug("Value of c after running graph: %s" % output)
-
 session.close()
 
 logger.debug('done')
