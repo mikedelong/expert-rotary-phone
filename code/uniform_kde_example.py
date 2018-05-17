@@ -27,9 +27,10 @@ density0.covariance_factor = lambda: .25
 density0._compute_covariance()
 logger.debug(density0.dataset)
 axes_00.plot(data0, 'r.', markersize=1)
-xs0 = np.linspace(min(data0), max(data0), 100)
-axes_01.plot(xs0, density0(xs0), 'b-')
-axes_02.plot(density0.dataset[0], 'g-')
+xs01 = np.linspace(min(data0), max(data0), 100)
+axes_01.plot(xs01, density0(xs01), 'b-')
+xs02 = np.linspace(min(data0), max(data0), 20)
+axes_02.plot(xs02, density0(xs02), 'g-')
 
 data1 = np.random.uniform(0, 1, size=100)
 density1 = gaussian_kde(data1)
@@ -39,7 +40,8 @@ logger.debug(density1.dataset)
 axes_10.plot(data1, 'r.', markersize=1)
 xs1 = np.linspace(min(data1), max(data1), 100)
 axes_11.plot(xs1, density1(xs1), 'b-')
-axes_12.plot(density1.dataset[0], 'g-')
+xs12 = np.linspace(min(data1), max(data1), 20)
+axes_12.plot(xs12, density1(xs12), 'g-')
 
 plt.show()
 
