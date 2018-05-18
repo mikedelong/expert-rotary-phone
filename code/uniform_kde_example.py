@@ -19,7 +19,7 @@ logger.debug('started')
 nrows = 2
 ncols = 3
 figure, ([axes_00, axes_01, axes_02], [axes_10, axes_11, axes_12]) = plt.subplots(nrows=nrows, ncols=ncols,
-                                                                                  figsize=(5 * nrows, 5 * ncols))
+                                                                                  figsize=(5 * ncols, 5 * nrows))
 
 points = 100
 samples = 33
@@ -65,7 +65,7 @@ del axes_12
 nrows = 2
 ncols = 2
 figure, ([axes_00, axes_01], [axes_10, axes_11]) = plt.subplots(nrows=nrows, ncols=ncols,
-                                                                figsize=(4 * nrows, 4 * ncols))
+                                                                figsize=(4 * ncols, 4 * nrows))
 
 axes_00.plot(data0, 'r.', markersize=1)
 axes_00.set_xlabel('data set 0')
