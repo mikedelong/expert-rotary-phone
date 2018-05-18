@@ -21,31 +21,33 @@ ncols = 3
 figure, ([axes_00, axes_01, axes_02], [axes_10, axes_11, axes_12]) = plt.subplots(nrows=nrows, ncols=ncols,
                                                                                   figsize=(5 * nrows, 5 * ncols))
 
-data0 = np.random.uniform(0, 1, size=100)
+points = 100
+samples = 20
+data0 = np.random.uniform(0, 1, size=points)
 density0 = gaussian_kde(data0)
 density0.covariance_factor = lambda: .25
 density0._compute_covariance()
 axes_00.plot(data0, 'r.', markersize=1)
 axes_00.set_xlabel('data')
-xs01 = np.linspace(min(data0), max(data0), 100)
+xs01 = np.linspace(min(data0), max(data0), points)
 axes_01.plot(xs01, density0(xs01), 'b-')
-axes_01.set_xlabel('KDE 100 points')
-xs02 = np.linspace(min(data0), max(data0), 20)
+axes_01.set_xlabel('KDE {} points'.format(points))
+xs02 = np.linspace(min(data0), max(data0), samples)
 axes_02.plot(xs02, density0(xs02), 'g-')
-axes_02.set_xlabel('KDE 20 points')
+axes_02.set_xlabel('KDE {} points'.format(samples))
 
-data1 = np.random.uniform(0, 1, size=100)
+data1 = np.random.uniform(0, 1, size=points)
 density1 = gaussian_kde(data1)
 density1.covariance_factor = lambda: .25
 density1._compute_covariance()
 axes_10.plot(data1, 'r.', markersize=1)
 axes_10.set_xlabel('data')
-xs1 = np.linspace(min(data1), max(data1), 100)
+xs1 = np.linspace(min(data1), max(data1), points)
 axes_11.plot(xs1, density1(xs1), 'b-')
-axes_11.set_xlabel('KDE 100 points')
-xs12 = np.linspace(min(data1), max(data1), 20)
+axes_11.set_xlabel('KDE {} points'.format(points))
+xs12 = np.linspace(min(data1), max(data1), samples)
 axes_12.plot(xs12, density1(xs12), 'g-')
-axes_12.set_xlabel('KDE 20 points')
+axes_12.set_xlabel('KDE {} points'.format(samples))
 
 plt.show()
 
