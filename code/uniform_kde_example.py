@@ -49,7 +49,9 @@ xs12 = np.linspace(min(data1), max(data1), samples)
 axes_12.plot(xs12, density1(xs12), 'g-')
 axes_12.set_xlabel('KDE {} points'.format(samples))
 
-plt.show()
+output_file = '../output/uniform_kde_samples.png'
+logger.debug('saving view to %s' % output_file)
+plt.savefig(output_file)
 
 logger.debug('done')
 finish_time = time.time()
