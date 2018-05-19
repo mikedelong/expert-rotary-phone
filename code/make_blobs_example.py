@@ -17,7 +17,7 @@ logger.debug('started')
 
 nrows = 1
 ncols = 2
-figure, ([axes_00, axes_01]) = plt.subplots(nrows=nrows, ncols=ncols, figsize=(5 * ncols, 5 * nrows))
+figure, ([axes_00, axes_01]) = plt.subplots(ncols=ncols, nrows=nrows, figsize=(5 * ncols, 5 * nrows))
 random_state = 1
 
 points = 1000
