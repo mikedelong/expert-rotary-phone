@@ -28,15 +28,16 @@ if __name__ == '__main__':
     model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     X = pd.DataFrame.from_dict({'x': xs})
     model.fit(X, ys)
-
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
     predicted = model.predict(zs)
     score = model.score(X, ys)
     logger.debug('model score: %.4f' % score)
+    logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
     plt.scatter(xs, ys, c='black')
     plt.scatter(zs, predicted, c='red')
     out_file = '../output/regressor_prediction.png'
+    logger.debug('writing scatter plot to %s' % out_file)
     plt.savefig(out_file)
     logger.debug('done')
     finish_time = time.time()
