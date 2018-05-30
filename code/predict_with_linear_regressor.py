@@ -3,7 +3,6 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from sklearn.linear_model import LinearRegression
 
 if __name__ == '__main__':
@@ -18,21 +17,30 @@ if __name__ == '__main__':
     console_handler.setLevel(logging.DEBUG)
     logger.debug('started')
 
+    random_seed = 2
+    np.random.seed(random_seed)
     # let's get a bunch of points
     real_size = 100
     synthetic_size = 200
     noise = 1.0
-    xs = np.linspace(1, 10, real_size)
+    # these are evenly spaced; let's make them non-uniform
+    xs = np.random.uniform(1, 10, size=real_size)
     # let's add a small noise term to get the y coordinates
-    ys = xs + np.random.uniform(-noise / 2, noise / 2, size=real_size)
+    ys = xs + np.random.uniform(-noise / 2.0, noise / 2.0, size=real_size)
     model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
-    X = pd.DataFrame.from_dict({'x': xs})
+    X = np.array(xs.reshape(-1, 1))
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
-    predicted = model.predict(zs)
+    predicted = model.predict(zs) + np.random.uniform(-noise / 2.0, noise / 2.0, size=synthetic_size)
     score = model.score(X, ys)
     logger.debug('model score: %.4f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
+
+    # now let's fit a second model to the predicted data
+    post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
+    post_X = np.array(zs)
+    post_model.fit(post_X, predicted)
+    logger.debug('post score: %.4f' % post_model.score(post_X, predicted))
 
     plt.scatter(xs, ys, c='black')
     plt.scatter(zs, predicted, c='red')
