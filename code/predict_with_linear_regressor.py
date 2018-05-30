@@ -32,7 +32,7 @@ if __name__ == '__main__':
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
     predicted = model.predict(zs)
     score = model.score(X, ys)
-    logger.debug(score)
+    logger.debug('model score: %.4f' % score)
     out_noise = np.sqrt(1.0 - score)
     logger.debug(out_noise)
 
