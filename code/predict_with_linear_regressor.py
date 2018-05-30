@@ -33,8 +33,6 @@ if __name__ == '__main__':
     predicted = model.predict(zs)
     score = model.score(X, ys)
     logger.debug('model score: %.4f' % score)
-    out_noise = np.sqrt(1.0 - score)
-    logger.debug(out_noise)
 
     plt.scatter(xs, ys, c='black')
     plt.scatter(zs, predicted, c='red')
