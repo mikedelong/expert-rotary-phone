@@ -26,12 +26,15 @@ if __name__ == '__main__':
     # these are evenly spaced; let's make them non-uniform
     xs = np.random.uniform(1, 10, size=real_size)
     # let's add a small noise term to get the y coordinates
-    ys = xs + np.random.uniform(-noise / 2.0, noise / 2.0, size=real_size)
+    real_noise_term = np.random.uniform(-noise / 2.0, noise / 2.0, size=real_size)
+    ys = xs + real_noise_term
     model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     X = np.array(xs.reshape(-1, 1))
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
-    predicted = model.predict(zs) + np.random.uniform(-noise / 2.0, noise / 2.0, size=synthetic_size)
+
+    synthetic_noise_term = np.random.uniform(-noise / 3.0, 2.0 * noise / 3.0, size=synthetic_size)
+    predicted = model.predict(zs) + synthetic_noise_term
     score = model.score(X, ys)
     logger.debug('model score: %.4f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
@@ -42,6 +45,7 @@ if __name__ == '__main__':
     post_model.fit(post_X, predicted)
     logger.debug('post score: %.4f' % post_model.score(post_X, predicted))
 
+    figure = plt.figure(figsize=(6, 6))
     plt.scatter(xs, ys, c='black')
     plt.scatter(zs, predicted, c='red')
     out_file = '../output/regressor_prediction.png'
