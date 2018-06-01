@@ -36,14 +36,14 @@ if __name__ == '__main__':
     synthetic_noise_term = np.random.uniform(-noise / 3.0, 2.0 * noise / 3.0, size=synthetic_size)
     predicted = model.predict(zs) + synthetic_noise_term
     score = model.score(X, ys)
-    logger.debug('model score: %.4f' % score)
+    logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(zs)
     post_model.fit(post_X, predicted)
-    logger.debug('post score: %.4f' % post_model.score(post_X, predicted))
+    logger.debug('post score: %.6f' % post_model.score(post_X, predicted))
 
     figure = plt.figure(figsize=(6, 6))
     plt.scatter(xs, ys, c='black')
