@@ -46,8 +46,8 @@ if __name__ == '__main__':
     logger.debug('post score: %.6f' % post_model.score(post_X, predicted))
 
     figure = plt.figure(figsize=(6, 6))
-    plt.scatter(xs, ys, c='black')
-    plt.scatter(zs, predicted, c='red')
+    plt.scatter(xs, ys, c='black', marker='o', s=3)
+    plt.scatter(zs, predicted, c='red', marker='o', s=3)
     out_file = '../output/regressor_prediction.png'
     logger.debug('writing scatter plot to %s' % out_file)
     plt.savefig(out_file)
