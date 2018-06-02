@@ -1,9 +1,24 @@
 import logging
+import math
 import time
 
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
+
+
+def solve_quadratic(a, b, c):
+    discriminant = b ** 2 - 4 * a * c  # discriminant
+
+    if discriminant < 0:
+        raise ValueError('No solutions')
+    elif discriminant == 0:
+        x1 = -b / (2 * a)
+        return x1, x1
+    else:  # if d > 0
+        x1 = (-b + math.sqrt(d)) / (2 * a)
+        x2 = (-b - math.sqrt(d)) / (2 * a)
+        return x1, x2
 
 if __name__ == '__main__':
     start_time = time.time()
