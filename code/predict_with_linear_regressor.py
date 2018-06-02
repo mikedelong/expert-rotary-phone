@@ -16,8 +16,9 @@ def solve_quadratic(a, b, c):
         x1 = -b / (2 * a)
         return x1, x1
     else:  # if d > 0
-        x1 = (-b + math.sqrt(d)) / (2 * a)
-        x2 = (-b - math.sqrt(d)) / (2 * a)
+        d_sqrt = math.sqrt(discriminant)
+        x1 = (-b + d_sqrt) / (2 * a)
+        x2 = (-b - d_sqrt) / (2 * a)
         return x1, x2
 
 if __name__ == '__main__':
