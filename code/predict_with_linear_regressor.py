@@ -1,5 +1,6 @@
 import logging
 import math
+import random
 import time
 
 import matplotlib.pyplot as plt
@@ -35,6 +36,7 @@ if __name__ == '__main__':
 
     random_seed = 2
     np.random.seed(random_seed)
+    random.seed(random_seed)
     # let's get a bunch of points
     real_size = 100
     synthetic_size = 200
@@ -68,7 +70,21 @@ if __name__ == '__main__':
     c_coef = (score - 1.0) * y_mean * y_mean + predicted[0] * predicted[0]
     logger.debug('quadratic coefficients: %.4f %.4f %.4f' % (a_coef, b_coef, c_coef))
     x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
-    logger.debug('quadratic solutions: %.4f %.4f' % (x1, x2))
+    logger.debug('quadratic solutions: %.4f %.4f predicted: %.4f' % (x1, x2, predicted[0]))
+
+    # choose between x1 and x2 randomly
+    y_0 = random.choice([x1, x2])
+
+    # the numerator terms are the (y_i - f_i)^2 iterates
+    numerator_terms = list()
+    numerator_0 = y_0 - predicted[0]
+    numerator_terms.append(numerator_0 * numerator_0)
+
+    # the denominator terms are the (y_i - y_mean)^2 iterates
+    denominator_terms = list()
+    denominator_0 = (y_0 - y_mean)
+    denominator_terms.append(denominator_0 * denominator_0)
+
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(zs)
