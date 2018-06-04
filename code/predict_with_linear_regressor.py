@@ -49,15 +49,19 @@ if __name__ == '__main__':
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
 
-    synthetic_noise_term = np.random.uniform(-noise / 3.0, 2.0 * noise / 3.0, size=synthetic_size)
     predicted = model.predict(zs)
-    # predicted = model.predict(zs) + synthetic_noise_term
     score = model.score(X, ys)
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
     y_mean = np.mean(predicted)
     logger.debug('y_mean: %.4f' % y_mean)
+    a_coef = score
+    b_coef = -2.0 * score * y_mean + 2.0 * y_mean - 2.0 * predicted[0]
+    c_coef = score - 1.0 - predicted[0] * predicted[0]
+    logger.debug('quadratic coefficients: %.4f %.4f %.4f' % (a_coef, b_coef, c_coef))
+    x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
+    logger.debug('quadratic solutions: %.4f %.4f' % (x1, x2))
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(zs)
