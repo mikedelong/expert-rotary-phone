@@ -14,13 +14,13 @@ def solve_quadratic(a, b, c):
     if discriminant < 0:
         raise ValueError('No solutions')
     elif discriminant == 0:
-        x1 = -b / (2 * a)
-        return x1, x1
+        result_1 = -b / (2 * a)
+        return result_1, result_1
     else:  # if d > 0
         d_sqrt = math.sqrt(discriminant)
-        x1 = (-b + d_sqrt) / (2 * a)
-        x2 = (-b - d_sqrt) / (2 * a)
-        return x1, x2
+        result_1 = (-b + d_sqrt) / (2 * a)
+        result_2 = (-b - d_sqrt) / (2 * a)
+        return result_1, result_2
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
 
-    predicted = model.predict(zs)
+    predicted = model.predict(X=zs)
 
     for index, item in enumerate(zs):
         prediction = model.coef_ * item + model.intercept_
