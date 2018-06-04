@@ -50,6 +50,13 @@ if __name__ == '__main__':
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
 
     predicted = model.predict(zs)
+
+    for index, item in enumerate(zs):
+        prediction = model.coef_ * item + model.intercept_
+        error = abs(prediction - predicted[index])
+        if error > 0.0:
+            logger.warning('linear model sanity check failed at step %d with error %.4f' % (index, error))
+
     score = model.score(X, ys)
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
