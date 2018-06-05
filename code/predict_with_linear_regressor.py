@@ -64,6 +64,7 @@ if __name__ == '__main__':
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
     variances = np.random.uniform(0.0, score / real_size, synthetic_size)
+    logger.debug('the sum of the variances is %.4f and the score is %.4f' % (sum(variances), score))
     y_mean = np.mean(predicted)
     logger.debug('y_mean: %.4f' % y_mean)
     variance = variances[0]
