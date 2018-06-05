@@ -9,7 +9,7 @@ from sklearn.linear_model import LinearRegression
 
 
 def solve_quadratic(a, b, c):
-    discriminant = b ** 2 - 4 * a * c  # discriminant
+    discriminant = b * b - 4 * a * c  # discriminant
 
     if discriminant < 0:
         raise ValueError('No solutions')
