@@ -63,12 +63,14 @@ if __name__ == '__main__':
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
+    variances = np.random.uniform(0.0, score / real_size, synthetic_size)
     y_mean = np.mean(predicted)
     logger.debug('y_mean: %.4f' % y_mean)
-    a_coef = score - 2.0
-    b_coef = (score - 1.0) * (-2.0 * y_mean) - 2.0 * predicted[0]
-    c_coef = (score - 1.0) * y_mean * y_mean + predicted[0] * predicted[0]
-    logger.debug('quadratic coefficients: %.4f %.4f %.4f' % (a_coef, b_coef, c_coef))
+    variance = variances[0]
+    a_coef = variance - 2.0
+    b_coef = (variance - 1.0) * (-2.0 * y_mean) - 2.0 * predicted[0]
+    c_coef = (variance - 1.0) * y_mean * y_mean + predicted[0] * predicted[0]
+    logger.debug('quadratic coefficients: %.4f %.4f %.4f, variance: %.4f' % (a_coef, b_coef, c_coef, variance))
     x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
     logger.debug('quadratic solutions: %.4f %.4f predicted: %.4f' % (x1, x2, predicted[0]))
 
