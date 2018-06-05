@@ -63,40 +63,34 @@ if __name__ == '__main__':
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
-    variances = np.random.uniform(0.0, score / real_size, synthetic_size)
-    logger.debug('the sum of the variances is %.4f and the score is %.4f' % (sum(variances), score))
+    result = list()
     y_mean = np.mean(predicted)
     logger.debug('y_mean: %.4f' % y_mean)
-    variance = variances[0]
-    a_coef = variance - 2.0
-    b_coef = (variance - 1.0) * (-2.0 * y_mean) - 2.0 * predicted[0]
-    c_coef = (variance - 1.0) * y_mean * y_mean + predicted[0] * predicted[0]
-    logger.debug('quadratic coefficients: %.4f %.4f %.4f, variance: %.4f' % (a_coef, b_coef, c_coef, variance))
-    x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
-    logger.debug('quadratic solutions: %.4f %.4f predicted: %.4f' % (x1, x2, predicted[0]))
+    for index in range(synthetic_size):
+        z = zs[index]
+        f_i = model.coef_ * z + model.intercept_
+        a_coef = score
+        b_coef = -2.0 * y_mean * (score - 1.0) - 2.0 * f_i
+        c_coef = (score - 1.0) * y_mean * y_mean + f_i * f_i
 
-    # choose between x1 and x2 randomly
-    y_0 = random.choice([x1, x2])
+        logger.debug('quadratic coefficients: %.4f %.4f %.4f' % (a_coef, b_coef, c_coef))
+        x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
+        logger.debug('quadratic solutions: %.4f %.4f predicted: %.4f' % (x1, x2, predicted[index]))
+        # choose between x1 and x2 randomly; this give us our two crossed lines.
+        y_i = random.choice([x1, x2])
+        result.append(y_i)
 
-    # the numerator terms are the (y_i - f_i)^2 iterates
-    numerator_terms = list()
-    numerator_0 = y_0 - predicted[0]
-    numerator_terms.append(numerator_0 * numerator_0)
 
-    # the denominator terms are the (y_i - y_mean)^2 iterates
-    denominator_terms = list()
-    denominator_0 = (y_0 - y_mean)
-    denominator_terms.append(denominator_0 * denominator_0)
 
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(zs)
-    post_model.fit(post_X, predicted)
-    logger.debug('post score: %.6f' % post_model.score(post_X, predicted))
+    post_model.fit(post_X, result)
+    logger.debug('post score: %.6f' % post_model.score(post_X, result))
 
     figure = plt.figure(figsize=(6, 6))
     plt.scatter(xs, ys, c='black', marker='o', s=3)
-    plt.scatter(zs, predicted, c='red', marker='o', s=3)
+    plt.scatter(zs, result, c='red', marker='o', s=3)
     out_file = '../output/regressor_prediction.png'
     logger.debug('writing scatter plot to %s' % out_file)
     plt.savefig(out_file)
