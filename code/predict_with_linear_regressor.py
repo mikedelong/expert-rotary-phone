@@ -22,6 +22,7 @@ def solve_quadratic(a, b, c):
         result_2 = (-b - d_sqrt) / (2 * a)
         return result_1, result_2
 
+
 if __name__ == '__main__':
     start_time = time.time()
 
@@ -66,21 +67,21 @@ if __name__ == '__main__':
     result = list()
     y_mean = np.mean(predicted)
     logger.debug('y_mean: %.4f' % y_mean)
+    variances = [score] * synthetic_size
     for index in range(synthetic_size):
         z = zs[index]
+        variance = variances[index]
         f_i = model.coef_ * z + model.intercept_
-        a_coef = score
-        b_coef = -2.0 * y_mean * (score - 1.0) - 2.0 * f_i
-        c_coef = (score - 1.0) * y_mean * y_mean + f_i * f_i
+        a_coef = variance
+        b_coef = -2.0 * y_mean * (variance - 1.0) - 2.0 * f_i
+        c_coef = (variance - 1.0) * y_mean * y_mean + f_i * f_i
 
-        logger.debug('quadratic coefficients: %.4f %.4f %.4f' % (a_coef, b_coef, c_coef))
+        logger.debug('quadratic coefficients: %.4f %.4f %.4f score: %.4f' % (a_coef, b_coef, c_coef, score))
         x1, x2 = solve_quadratic(a_coef, b_coef, c_coef)
         logger.debug('quadratic solutions: %.4f %.4f predicted: %.4f' % (x1, x2, predicted[index]))
         # choose between x1 and x2 randomly; this give us our two crossed lines.
         y_i = random.choice([x1, x2])
         result.append(y_i)
-
-
 
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
