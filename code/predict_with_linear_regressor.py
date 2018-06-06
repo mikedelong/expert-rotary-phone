@@ -51,7 +51,6 @@ if __name__ == '__main__':
     X = np.array(xs.reshape(-1, 1))
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
-
     predicted = model.predict(X=zs)
 
     for index, item in enumerate(zs):
