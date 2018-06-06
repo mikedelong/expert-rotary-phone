@@ -65,7 +65,6 @@ if __name__ == '__main__':
     real_batch_size = 5
     synthetic_batch_size = 10
     real_starts = range(0, real_size, real_batch_size)
-
     synthetic_starts = range(0, synthetic_size, synthetic_batch_size)
 
     synthetic_index = 0
