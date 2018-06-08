@@ -39,6 +39,12 @@ if __name__ == '__main__':
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
+    intervals_count = 10
+    delta = (max(xs) - min(xs)) / float(intervals_count)
+    logger.debug('intervals_count : %d, delta = %.4f' % (intervals_count, delta))
+    interval_starts = [min(xs) + index * delta for index in range(0, intervals_count + 1)]
+    logger.debug('interval starts: %s' % interval_starts)
+
     logger.debug('done')
     finish_time = time.time()
     elapsed_hours, elapsed_remainder = divmod(finish_time - start_time, 3600)
