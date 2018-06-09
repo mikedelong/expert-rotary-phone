@@ -22,8 +22,8 @@ if __name__ == '__main__':
     np.random.seed(random_seed)
     random.seed(random_seed)
     # let's get a bunch of points
-    real_size = 100
-    synthetic_size = 200
+    real_size = 1000
+    synthetic_size = 2000
 
     noise = 1.0
     # these are evenly spaced; let's make them non-uniform
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     logger.debug('model score: %.6f' % score)
     logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
 
-    intervals_count = 10
+    intervals_count = 20
     delta = (max(xs) - min(xs)) / float(intervals_count)
     logger.debug('intervals_count : %d, delta = %.4f' % (intervals_count, delta))
     interval_starts = [min(xs) + index * delta for index in range(0, intervals_count + 1)]
