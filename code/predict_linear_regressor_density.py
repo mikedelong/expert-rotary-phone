@@ -2,6 +2,7 @@ import logging
 import random
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
@@ -64,6 +65,12 @@ if __name__ == '__main__':
             result_x.append(np.random.uniform(lower, upper))
             result_y.append(np.random.uniform(y_min, y_max))
 
+    figure = plt.figure(figsize=(6, 6))
+    plt.scatter(xs, ys, c='black', marker='o', s=3)
+    plt.scatter(result_x, result_y, c='red', marker='o', s=3)
+    out_file = '../output/regressor_density_prediction.png'
+    logger.debug('writing scatter plot to %s' % out_file)
+    plt.savefig(out_file)
 
     logger.debug('done')
     finish_time = time.time()
