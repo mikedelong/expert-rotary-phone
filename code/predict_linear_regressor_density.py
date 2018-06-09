@@ -45,6 +45,26 @@ if __name__ == '__main__':
     interval_starts = [min(xs) + index * delta for index in range(0, intervals_count + 1)]
     logger.debug('interval starts: %s' % interval_starts)
 
+    result_x = list()
+    result_y = list()
+    for index, interval_start in enumerate(interval_starts[:-1]):
+        lower = interval_start
+        upper = interval_starts[index + 1]
+        count = 0
+        y_min = max(ys)
+        y_max = min(ys)
+        for jndex, value in enumerate(xs):
+            if lower <= value < upper:
+                count += 1
+                y_value = ys[jndex]
+                y_max = max(y_max, y_value)
+                y_min = min(y_min, y_value)
+        values_to_generate = count * synthetic_size // real_size
+        for _ in range(values_to_generate):
+            result_x.append(np.random.uniform(lower, upper))
+            result_y.append(np.random.uniform(y_min, y_max))
+
+
     logger.debug('done')
     finish_time = time.time()
     elapsed_hours, elapsed_remainder = divmod(finish_time - start_time, 3600)
