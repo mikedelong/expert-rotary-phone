@@ -23,9 +23,9 @@ if __name__ == '__main__':
     random.seed(random_seed)
     # let's get a bunch of points
     real_size = 1000
-    synthetic_size = 2000
+    synthetic_size = 600
 
-    noise = 1.0
+    noise = 2.0
     # these are evenly spaced; let's make them non-uniform
     xs = np.random.uniform(1, 10, size=real_size)
     # let's add a small noise term to get the y coordinates
@@ -64,6 +64,12 @@ if __name__ == '__main__':
         for _ in range(values_to_generate):
             result_x.append(np.random.uniform(lower, upper))
             result_y.append(np.random.uniform(y_min, y_max))
+
+    # now let's fit a second model to the predicted data
+    post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
+    post_X = np.array(result_x).reshape(-1, 1)
+    post_model.fit(post_X, result_y)
+    logger.debug('post score: %.6f' % post_model.score(post_X, result_y))
 
     figure = plt.figure(figsize=(6, 6))
     plt.scatter(xs, ys, c='black', marker='o', s=3)
