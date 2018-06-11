@@ -23,7 +23,7 @@ if __name__ == '__main__':
     random.seed(random_seed)
     # let's get a bunch of points
     real_size = 1000
-    synthetic_size = 600
+    synthetic_size = 1000
 
     noise = 2.0
     # these are evenly spaced; let's make them non-uniform
@@ -68,16 +68,37 @@ if __name__ == '__main__':
         values_generated += values_to_generate
 
     logger.debug('values generated: %d actual %d expected' % (values_generated, synthetic_size))
+    residual_count = synthetic_size - values_generated
+    if residual_count > 0:
+        for index in range(residual_count):
+            # pick a random interval to top up
+            interval = np.random.randint(0, intervals_count)
+            lower = interval_starts[interval]
+            upper = interval_starts[interval + 1]
+            y_min = max(ys)
+            y_max = min(ys)
+            for jndex, value in enumerate(xs):
+                if lower <= value < upper:
+                    y_value = ys[jndex]
+                    y_max = max(y_max, y_value)
+                    y_min = min(y_min, y_value)
+            result_x.append(np.random.uniform(lower, upper))
+            result_y.append(np.random.uniform(y_min, y_max))
+            values_generated += 1
+
+
 
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(result_x).reshape(-1, 1)
     post_model.fit(post_X, result_y)
-    logger.debug('post score: %.6f' % post_model.score(post_X, result_y))
+    logger.debug('synthetic model/synthetic data score: %.6f' % post_model.score(post_X, result_y))
+    logger.debug('synthetic model/real data score: %.6f' % post_model.score(X, ys))
+    logger.debug('real model/synthetic data score: %.6f' % model.score(post_X, result_y))
 
     figure = plt.figure(figsize=(6, 6))
-    plt.scatter(xs, ys, c='black', marker='o', s=3)
-    plt.scatter(result_x, result_y, c='red', marker='o', s=3)
+    plt.scatter(xs, ys, c='black', marker='o', s=2)
+    plt.scatter(result_x, result_y, c='red', marker='o', s=2)
     out_file = '../output/regressor_density_prediction.png'
     logger.debug('writing scatter plot to %s' % out_file)
     plt.savefig(out_file)
