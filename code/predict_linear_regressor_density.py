@@ -18,33 +18,32 @@ if __name__ == '__main__':
     console_handler.setLevel(logging.DEBUG)
     logger.debug('started')
 
+    # random seeds
     random_seed = 2
     np.random.seed(random_seed)
     random.seed(random_seed)
-    # let's get a bunch of points
+
+    # generate random data using a nonuniform line plus a noise term
     real_size = 1000
     synthetic_size = 1000
-
     noise = 2.0
-    # these are evenly spaced; let's make them non-uniform
-    xs = np.random.uniform(1, 10, size=real_size)
-    # let's add a small noise term to get the y coordinates
+    xs = np.random.uniform(1, 100, size=real_size)
     real_noise_term = np.random.uniform(-noise / 2.0, noise / 2.0, size=real_size)
     ys = xs + real_noise_term
+
     model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     X = np.array(xs.reshape(-1, 1))
     model.fit(X, ys)
     zs = np.random.uniform(min(xs), max(xs), size=synthetic_size).reshape(-1, 1)
     predicted = model.predict(X=zs)
-    score = model.score(X, ys)
-    logger.debug('model score: %.6f' % score)
-    logger.debug('model coefficient and intercept: %.4f %.4f' % (model.coef_, model.intercept_))
+    logger.debug(
+        'model score: %.6f coefficient: %.4f intercept: %.4f' % (model.score(X, ys), model.coef_, model.intercept_))
 
-    intervals_count = 20
+    # todo choose the interval count more carefully
+    intervals_count = int(xs.max()) - int(xs.min())
     delta = (max(xs) - min(xs)) / float(intervals_count)
     logger.debug('intervals_count : %d, delta = %.4f' % (intervals_count, delta))
     interval_starts = [min(xs) + index * delta for index in range(0, intervals_count + 1)]
-    logger.debug('interval starts: %s' % interval_starts)
 
     result_x = list()
     result_y = list()
@@ -86,13 +85,12 @@ if __name__ == '__main__':
             result_y.append(np.random.uniform(y_min, y_max))
             values_generated += 1
 
-
-
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     post_X = np.array(result_x).reshape(-1, 1)
     post_model.fit(post_X, result_y)
-    logger.debug('synthetic model/synthetic data score: %.6f' % post_model.score(post_X, result_y))
+    logger.debug('synthetic model/synthetic data score: %.6f coefficient: %.4f intercept: %.4f' % (
+        post_model.score(post_X, result_y), post_model.coef_, post_model.intercept_))
     logger.debug('synthetic model/real data score: %.6f' % post_model.score(X, ys))
     logger.debug('real model/synthetic data score: %.6f' % model.score(post_X, result_y))
 
