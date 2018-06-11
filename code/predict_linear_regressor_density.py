@@ -48,6 +48,7 @@ if __name__ == '__main__':
 
     result_x = list()
     result_y = list()
+    values_generated = 0
     for index, interval_start in enumerate(interval_starts[:-1]):
         lower = interval_start
         upper = interval_starts[index + 1]
@@ -64,6 +65,9 @@ if __name__ == '__main__':
         for _ in range(values_to_generate):
             result_x.append(np.random.uniform(lower, upper))
             result_y.append(np.random.uniform(y_min, y_max))
+        values_generated += values_to_generate
+
+    logger.debug('values generated: %d actual %d expected' % (values_generated, synthetic_size))
 
     # now let's fit a second model to the predicted data
     post_model = LinearRegression(fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
