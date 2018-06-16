@@ -30,8 +30,7 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(figsize=(8, 4))
 
     # plot the cumulative histogram
-    n, bins, patches = ax.hist(x, n_bins, normed=1, histtype='step',
-                               cumulative=True, label='Empirical')
+    n, bins, patches = ax.hist(x, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
 
     # Add a line showing the expected distribution.
     y = mlab.normpdf(bins, mu, sigma).cumsum()
@@ -39,8 +38,6 @@ if __name__ == '__main__':
 
     ax.plot(bins, y, 'k--', linewidth=1.5, label='Theoretical')
 
-    # Overlay a reversed cumulative histogram.
-    ax.hist(x, bins=bins, normed=1, histtype='step', cumulative=-1, label='Reversed emp.')
 
     # tidy up the figure
     ax.grid(True)
@@ -49,7 +46,10 @@ if __name__ == '__main__':
     ax.set_xlabel('Annual rainfall (mm)')
     ax.set_ylabel('Likelihood of occurrence')
 
-    plt.show()
+    output_file = '../output/subsample_cdf.png'
+    logger.debug('writing plot file to %s' % output_file)
+
+    plt.savefig(output_file)
 
     logger.debug('done')
     finish_time = time.time()
