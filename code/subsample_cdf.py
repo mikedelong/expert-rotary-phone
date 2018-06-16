@@ -4,6 +4,7 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+from matplotlib import mlab
 
 if __name__ == '__main__':
     start_time = time.time()
