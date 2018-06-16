@@ -1,11 +1,9 @@
 # https://matplotlib.org/examples/statistics/histogram_demo_cumulative.html
 import logging
 
-import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 import time
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn.tree import DecisionTreeClassifier
 
 if __name__ == '__main__':
     start_time = time.time()
