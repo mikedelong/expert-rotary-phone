@@ -27,10 +27,14 @@ if __name__ == '__main__':
     size = 1000
     x = np.random.normal(mu, sigma, size=size)
 
-    fig, ax = plt.subplots(figsize=(8, 4))
+    x1 = np.random.choice(x, size // 2, replace=False)
+    x2 = np.random.choice(x, size // 2, replace=False)
+    fig, (ax, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 12))
 
     # plot the cumulative histogram
     n, bins, patches = ax.hist(x, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
+    n1, bins1, patches1 = ax1.hist(x1, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
+    n2, bins2, patches2 = ax2.hist(x2, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
 
     # Add a line showing the expected distribution.
     y = mlab.normpdf(bins, mu, sigma).cumsum()
@@ -38,13 +42,16 @@ if __name__ == '__main__':
 
     ax.plot(bins, y, 'k--', linewidth=1.5, label='Theoretical')
 
-
     # tidy up the figure
     ax.grid(True)
+    ax1.grid(True)
+    ax2.grid(True)
     ax.legend(loc='right')
-    ax.set_title('Cumulative step histograms')
-    ax.set_xlabel('Annual rainfall (mm)')
-    ax.set_ylabel('Likelihood of occurrence')
+    ax1.legend(loc='right')
+    ax2.legend(loc='right')
+    # ax.set_title('Cumulative step histograms')
+    # ax.set_xlabel('Annual rainfall (mm)')
+    # ax.set_ylabel('Likelihood of occurrence')
 
     output_file = '../output/subsample_cdf.png'
     logger.debug('writing plot file to %s' % output_file)
