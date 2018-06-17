@@ -27,8 +27,10 @@ if __name__ == '__main__':
     size = 1000
     x = np.random.normal(mu, sigma, size=size)
 
-    x1 = np.random.choice(x, size // 2, replace=False)
-    x2 = np.random.choice(x, size // 2, replace=False)
+    x_shuffle = x.copy()
+    np.random.shuffle(x_shuffle)
+    x1 = x_shuffle[:size // 2]
+    x2 = x_shuffle[size // 2:]
     fig, (ax, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 12))
 
     # plot the cumulative histogram
@@ -49,9 +51,6 @@ if __name__ == '__main__':
     ax.legend(loc='right')
     ax1.legend(loc='right')
     ax2.legend(loc='right')
-    # ax.set_title('Cumulative step histograms')
-    # ax.set_xlabel('Annual rainfall (mm)')
-    # ax.set_ylabel('Likelihood of occurrence')
 
     output_file = '../output/subsample_cdf.png'
     logger.debug('writing plot file to %s' % output_file)
