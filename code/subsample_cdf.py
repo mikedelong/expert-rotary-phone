@@ -3,11 +3,11 @@ import logging
 
 import matplotlib.pyplot as plt
 import numpy as np
-import time
-from matplotlib import mlab
+from scipy.stats import norm
+from time import time
 
 if __name__ == '__main__':
-    start_time = time.time()
+    start_time = time()
 
     formatter = logging.Formatter('%(asctime)s : %(name)s :: %(levelname)s : %(message)s')
     logger = logging.getLogger('main')
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     n2, bins2, patches2 = ax2.hist(x2, n_bins, density=True, histtype='step', cumulative=True, label='Empirical')
 
     # Add a line showing the expected distribution.
-    y = mlab.normpdf(bins, mu, sigma).cumsum()
+    y = norm.pdf(bins, mu, sigma).cumsum()
     y /= y[-1]
 
     ax.plot(bins, y, 'k--', linewidth=1.5, label='Theoretical')
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     plt.savefig(output_file)
 
     logger.debug('done')
-    finish_time = time.time()
+    finish_time = time()
     elapsed_hours, elapsed_remainder = divmod(finish_time - start_time, 3600)
     elapsed_minutes, elapsed_seconds = divmod(elapsed_remainder, 60)
     logger.info('Time: {:0>2}:{:0>2}:{:05.2f}'.format(int(elapsed_hours), int(elapsed_minutes), elapsed_seconds))
