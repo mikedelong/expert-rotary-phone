@@ -34,9 +34,9 @@ if __name__ == '__main__':
     fig, (ax, ax1, ax2) = plt.subplots(nrows=3, figsize=(8, 12))
 
     # plot the cumulative histogram
-    n, bins, patches = ax.hist(x, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
-    n1, bins1, patches1 = ax1.hist(x1, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
-    n2, bins2, patches2 = ax2.hist(x2, n_bins, normed=1, histtype='step', cumulative=True, label='Empirical')
+    n, bins, patches = ax.hist(x, n_bins, density=True, histtype='step', cumulative=True, label='Empirical')
+    n1, bins1, patches1 = ax1.hist(x1, n_bins, density=True, histtype='step', cumulative=True, label='Empirical')
+    n2, bins2, patches2 = ax2.hist(x2, n_bins, density=True, histtype='step', cumulative=True, label='Empirical')
 
     # Add a line showing the expected distribution.
     y = mlab.normpdf(bins, mu, sigma).cumsum()
